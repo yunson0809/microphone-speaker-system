@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Microphone & Speaker</title>
+</head>
+<body>
+    <h2>Online Microphone & Speaker System</h2>
+    <button id="start">Start Microphone</button>
+    <button id="stop">Stop Microphone</button>
+    <audio id="audio" autoplay></audio>
+
+    <script>
+        let stream;
+        const startBtn = document.getElementById("start");
+        const stopBtn = document.getElementById("stop");
+        const audioElement = document.getElementById("audio");
+
+        startBtn.addEventListener("click", async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioElement.srcObject = stream;
+            } catch (error) {
+                console.error("Error accessing microphone:", error);
+            }
+        });
+
+        stopBtn.addEventListener("click", () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                audioElement.srcObject = null;
+            }
+        });
+    </script>
+</body>
+</html>
